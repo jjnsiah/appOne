@@ -9,7 +9,7 @@
 		pictureSource = navigator.camera.PictureSourceType;
 		destinationType = navigator.camera.DestinationType;
 
-		
+
 
 		document.getElementById("capturePhoto").onclick = function() {
 			navigator.camera.getPicture(onPhotoDataSuccess, onFail, {
@@ -40,4 +40,30 @@
 
 	}
 
+})();
+
+(function(){
+	document.addEventListener('deviceready',onDeviceReady.bind(this),false);
+	function onDeviceReady(){
+		document.getElementById("barcodeScanner").onclick=function(){
+			cordova.plugin.barcodeScanner.scan(
+				function (result){
+								alert(	"We got a barcode\n" +
+                "Result: " + result.text + "\n" +
+                "Format: " + result.format + "\n" +
+                "Cancelled: " + result.cancelled);
+				},
+				function (error){
+					alert("Scanning failed"+ error);
+				},
+				{
+				"preferFrontCamera" : true, // iOS and Android
+				"showFlipCameraButton" : true, // iOS and Android
+				"prompt" : "Place a barcode inside the scan area", // supported on Android only
+				"formats" : "QR_CODE,PDF_417", // default: all but PDF_417 and RSS_EXPANDED
+				"orientation" : "landscape"
+				}
+			);
+		}
+	};
 })();
